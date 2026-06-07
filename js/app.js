@@ -68,6 +68,11 @@ function initTheme() {
 
 // --- Relative Time (Persian) ---
 
+function toPersianDigits(str) {
+  const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+  return String(str).replace(/[0-9]/g, w => persianDigits[parseInt(w, 10)]);
+}
+
 function relativeTime(dateStr) {
   const now = new Date();
   const date = new Date(dateStr);
@@ -80,14 +85,14 @@ function relativeTime(dateStr) {
   const diffYear = Math.floor(diffDay / 365);
 
   if (diffSec < 60) return 'همین الان';
-  if (diffMin < 60) return `${diffMin} دقیقه پیش`;
-  if (diffHour < 24) return `${diffHour} ساعت پیش`;
+  if (diffMin < 60) return `${toPersianDigits(diffMin)} دقیقه پیش`;
+  if (diffHour < 24) return `${toPersianDigits(diffHour)} ساعت پیش`;
   if (diffDay === 1) return 'دیروز';
-  if (diffDay < 30) return `${diffDay} روز پیش`;
+  if (diffDay < 30) return `${toPersianDigits(diffDay)} روز پیش`;
   if (diffMonth === 1) return 'یک ماه پیش';
-  if (diffMonth < 12) return `${diffMonth} ماه پیش`;
+  if (diffMonth < 12) return `${toPersianDigits(diffMonth)} ماه پیش`;
   if (diffYear === 1) return 'یک سال پیش';
-  return `${diffYear} سال پیش`;
+  return `${toPersianDigits(diffYear)} سال پیش`;
 }
 
 // --- Post List (Index Page) ---
@@ -124,7 +129,7 @@ function renderPostList(listEl, filterTag) {
   if (posts.length === 0) {
     listEl.innerHTML = `
       <div class="loading">
-        ${filterTag ? `پستی با تگ «${escapeHtml(filterTag)}» پیدا نشد. <a href="index.html">نمایش همه</a>` : 'هنوز پستی نوشته نشده.'}
+        ${filterTag ? `پستی با تگ «${escapeHtml(filterTag)}» پیدا نشد. <a href="./">نمایش همه</a>` : 'هنوز پستی نوشته نشده.'}
       </div>
     `;
     return;
@@ -134,7 +139,7 @@ function renderPostList(listEl, filterTag) {
   const filterHtml = filterTag ? `
     <div class="active-filter">
       <span>فیلتر: <span class="tag">${escapeHtml(filterTag)}</span></span>
-      <a href="index.html" class="clear-filter">✕ حذف فیلتر</a>
+      <a href="./" class="clear-filter">✕ حذف فیلتر</a>
     </div>
   ` : '';
 
@@ -144,7 +149,7 @@ function renderPostList(listEl, filterTag) {
         <h2 class="post-title">${escapeHtml(post.title)}</h2>
         ${post.excerpt ? `<p class="post-excerpt">${escapeHtml(post.excerpt)}</p>` : ''}
         <div class="post-meta">
-          <span class="post-date">${escapeHtml(post.date)}</span>
+          <span class="post-date">${toPersianDigits(escapeHtml(post.date))}</span>
         </div>
       </a>
     </li>
@@ -195,7 +200,7 @@ async function loadPost() {
         </div>
         ${postMeta.tags && postMeta.tags.length ? `
           <div class="post-tags" style="margin-top: 0.75rem;">
-            ${postMeta.tags.map(tag => `<a href="index.html?tag=${encodeURIComponent(tag)}" class="tag">${escapeHtml(tag)}</a>`).join('')}
+            ${postMeta.tags.map(tag => `<a href="./?tag=${encodeURIComponent(tag)}" class="tag">${escapeHtml(tag)}</a>`).join('')}
           </div>
         ` : ''}
       `;
