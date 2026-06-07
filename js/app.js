@@ -195,7 +195,7 @@ async function loadPost() {
       headerEl.innerHTML = `
         <h1 class="post-title">${escapeHtml(postMeta.title)}</h1>
         <div class="post-meta">
-          <span class="post-date">${escapeHtml(postMeta.date)}</span>
+          <span class="post-date">${toPersianDigits(escapeHtml(postMeta.date))}</span>
           ${lastEditedHtml}
         </div>
         ${postMeta.tags && postMeta.tags.length ? `
