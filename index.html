@@ -22,6 +22,26 @@
   <!-- Vercel Web Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    window.va('beforeSend', function(event) {
+      try {
+        var url = new URL(event.url);
+        if (url.pathname.endsWith('/post.html')) {
+          var slug = url.searchParams.get('slug');
+          if (slug) {
+            url.pathname = '/posts/' + slug;
+          }
+        } else if (url.pathname.endsWith('/index.html') || url.pathname === '/') {
+          var tag = url.searchParams.get('tag');
+          if (tag) {
+            url.pathname = '/tags/' + tag;
+          }
+        }
+        event.url = url.toString();
+        return event;
+      } catch (err) {
+        return event;
+      }
+    });
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
 
@@ -50,7 +70,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>ساخته شده با ❤️ و مارک‌داون</p>
+      <p>ساخته شده با 💙 و مارک‌داون</p>
     </div>
   </footer>
 

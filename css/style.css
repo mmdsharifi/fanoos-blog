@@ -537,3 +537,106 @@ a.tag:hover {
     font-size: 0.82rem;
   }
 }
+
+/* ============================================
+   Share Feature Styling
+   ============================================ */
+.post-share {
+  margin-top: 3.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.share-divider {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.share-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 1.1rem 1.4rem;
+  border-radius: var(--radius);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.share-container:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(46, 56, 255, 0.05);
+}
+
+[data-theme="dark"] .share-container:hover {
+  box-shadow: 0 4px 12px rgba(77, 85, 255, 0.1);
+}
+
+.share-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 0.55rem 1.15rem;
+  border-radius: calc(var(--radius) - 2px);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--transition), transform 0.1s ease;
+  position: relative;
+}
+
+.share-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+.share-btn:active {
+  transform: scale(0.97);
+}
+
+.share-toast {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--fg);
+  color: var(--bg);
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity var(--transition), transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  pointer-events: none;
+  direction: rtl;
+}
+
+.share-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 640px) {
+  .share-container {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .share-btn {
+    justify-content: center;
+  }
+}

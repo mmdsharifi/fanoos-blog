@@ -222,6 +222,9 @@ async function loadPost() {
     });
 
     contentEl.innerHTML = md.render(mdText);
+    
+    // Setup share button with UTM parameters
+    setupShareButton(slug);
 
   } catch (err) {
     contentEl.innerHTML = `<div class="error-message"><h2>خطا</h2><p>${escapeHtml(err.message)}</p></div>`;
@@ -237,6 +240,54 @@ function showPostError(contentEl, headerEl) {
     </div>
   `;
   document.title = 'پست پیدا نشد — فانوس';
+}
+
+// --- Share Feature ---
+
+function setupShareButton(slug) {
+  const shareSection = document.getElementById('post-share');
+  const shareBtn = document.getElementById('share-btn');
+  if (!shareSection || !shareBtn) return;
+
+  // Build the share link with UTM parameters
+  // Source: share, Medium: button, Campaign: user_share, Term: slug, Content: footer
+  const shareUrl = `${window.location.origin}${window.location.pathname}?slug=${encodeURIComponent(slug)}&utm_source=share&utm_medium=button&utm_campaign=user_share&utm_term=${encodeURIComponent(slug)}&utm_content=footer`;
+
+  // Show the share section now that we have a valid slug
+  shareSection.style.display = 'block';
+
+  shareBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast('لینک مقاله کپی شد!');
+    } catch (err) {
+      // Fallback for older browsers
+      const input = document.createElement('input');
+      input.value = shareUrl;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      showToast('لینک مقاله کپی شد!');
+    }
+  });
+}
+
+function showToast(message) {
+  let toast = document.getElementById('share-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'share-toast';
+    toast.className = 'share-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  // Hide toast after 3 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
 }
 
 // --- Helpers ---
